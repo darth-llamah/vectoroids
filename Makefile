@@ -15,17 +15,13 @@ BIN_PREFIX=$(PREFIX)/bin
 DATA_PREFIX=$(PREFIX)/share/vectoroids/
 JOY=YES
 TARGET_DEF=LINUX
-
-CC         = mipsel-linux-gcc
-LD         = mipsel-linux-gcc
-STRIP      = mipsel-linux-strip
-
-SYSROOT:=$(shell mipsel-gcw0-linux-uclibc-gcc --print-sysroot)
-SDL_CFLAGS:=$(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
-SDL_LIB:=$(shell $(SYSROOT)/usr/bin/sdl-config --libs) -lSDL_mixer -lSDL_image
+SDL_LIB=$(shell sdl-config --libs) $(MIXER) -lSDL_image
 
 NOSOUNDFLAG=__SOUND
-CFLAGS    = $(SDL_CFLAGS) -Winline -mabi=32 -mips32 -mtune=mips32 -O3 -fstrength-reduce -fthread-jumps -fexpensive-optimizations -fomit-frame-pointer -frename-registers -pipe -G 0 -ffast-math #-fprofile-use -D$(NOSOUNDFLAG) \
+MIXER=-lSDL_mixer
+
+CFLAGS=-Wall -Wno-long-long -pedantic -ansi -O2 \
+	$(shell sdl-config --cflags) -D$(NOSOUNDFLAG) \
 	-DDATA_PREFIX=\"$(DATA_PREFIX)\" -DJOY_$(JOY) -D$(TARGET_DEF)
 
 

@@ -782,7 +782,7 @@ int title(void)
       {
         key = event.key.keysym.sym;
 
-	if (key == SDLK_SPACE)
+	if (key == SDLK_LCTRL)
         {
 	  done = 1;
 	}
@@ -1104,7 +1104,7 @@ int game(void)
 		      
 		      up_pressed = 1;
 		    }
-		  else if ((key == SDLK_SPACE) &&
+		  else if ((key == SDLK_LCTRL) &&
 		           player_alive)
 		    {
 		      /* Fire a bullet! */
@@ -1199,6 +1199,17 @@ int game(void)
 		      left_pressed = 0;
 		      right_pressed = 0;
 		    }
+		}
+		if (event.jaxis.axis == JOY_Y)
+		{
+			if (event.jaxis.value < -256)
+			{
+			up_pressed = 1;
+			}
+			else
+			{
+			up_pressed = 0;
+			}
 		}
 	    }
 #endif

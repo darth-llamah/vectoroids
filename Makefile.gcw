@@ -1,0 +1,32 @@
+CC=mipsel-linux-gcc
+LD=mipsel-linux-gcc
+STRIP=mipsel-linux-strip
+JOY=YES
+NOSOUNDFLAG=__SOUND
+TARGET_DEF=EMBEDDED
+
+PREFIX=
+MAN_PREFIX=$(PREFIX)
+BIN_PREFIX=$(PREFIX)
+DATA_PREFIX=$(PREFIX)
+
+SYSROOT=$(shell mipsel-gcw0-linux-uclibc-gcc --print-sysroot)
+SDL_CFLAGS=$(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIB=$(shell $(SYSROOT)/usr/bin/sdl-config --libs) -lSDL_mixer -lSDL_image
+
+CFLAGS=$(SDL_CFLAGS) -Winline -mabi=32 -mips32 -mtune=mips32 -O3 -fstrength-reduce -fthread-jumps -fexpensive-optimizations -fomit-frame-pointer -frename-registers -pipe -G 0 -ffast-math -D$(NOSOUNDFLAG) -DJOY_$(JOY) -D$(TARGET_DEF)
+
+.PHONY: all
+
+all:	vectoroids
+
+clean:
+	-rm vectoroids
+	-rm *.o
+
+
+vectoroids:	vectoroids.o
+	$(CC) $(CFLAGS) vectoroids.o -o vectoroids $(SDL_LIB)
+
+
+vectoroids.o:	vectoroids.c
