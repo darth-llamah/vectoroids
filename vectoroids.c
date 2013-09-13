@@ -580,7 +580,6 @@ int main(int argc, char * argv[])
   FILE * fi;
   char statefile[256], buf[256];
 
-
   setup(argc, argv);
   
 
@@ -1036,7 +1035,7 @@ int game(void)
   /* Hide mouse cursor: */
   
   if (fullscreen)
-    SDL_ShowCursor(0);
+    SDL_ShowCursor(SDL_DISABLE);
 
   
   /* Play music: */
@@ -1838,7 +1837,7 @@ int game(void)
   /* Display mouse cursor: */
   
   if (fullscreen)
-    SDL_ShowCursor(1);
+    SDL_ShowCursor(SDL_DISABLE);
 
 
   return(quit);
@@ -3010,6 +3009,7 @@ SDL_Surface * set_vid_mode(unsigned flags)
   /* Prefer 16bpp, but also prefer native modes to emulated 16bpp. */
   
   int depth;
+SDL_ShowCursor(SDL_DISABLE);
   
   depth = SDL_VideoModeOK(WIDTH, HEIGHT, 16, flags);
   return depth ? SDL_SetVideoMode(WIDTH, HEIGHT, depth, flags) : NULL;
